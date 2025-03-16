@@ -54,13 +54,13 @@ public class Scheduler implements Schedulable {
 
 @Override
 public Patient getNextPatient() {
-    return queue.poll(); // Just retrieve the patient, don't modify No-Show list here
+    return queue.poll(); 
 }
 
-   // Stores last 5 No-Show patients
+   // Stores last 5 NoShow patients
 private LinkedList<Patient> noShowList = new LinkedList<>();
 
-// Adds a patient to the No-Show list (keeps only last 5)
+// Adds a patient to the NoShow list (keeps only last 5)
 public void addNoShow(Patient patient) {
     if (noShowList.size() >= 5) {
         noShowList.removeFirst();
@@ -68,7 +68,7 @@ public void addNoShow(Patient patient) {
     noShowList.add(patient);
 }
 
-// Retrieves the list of No-Show patients
+// Retrieves the list of NoShow patients
 public List<Patient> getNoShowPatients() {
     return new ArrayList<>(noShowList);
 }
@@ -79,25 +79,11 @@ public List<Patient> getPatients() {
 public Patient peekNextPatient() {
     return queue.peek(); // This retrieves the next patient without removing them
 }
-
-
-
-    // To Test the priority queue sorting 
-    public static void main(String[] args) {
-        Scheduler scheduler = new Scheduler();
-
-        // Adding patients with different priorities to test
-        scheduler.addPatient(new Patient("Alice", "Urgent", 65, "Dr. Smith", false));
-        scheduler.addPatient(new Patient("Bobe", "Medium", 45, "Dr. Eoin", false));
-        scheduler.addPatient(new Patient("Lucas", "Low", 30, "Dr. Emma", true)); // From hospital
-        scheduler.addPatient(new Patient("Gaby", "Urgent", 50, "Dr. Jack", true)); // Urgent + hospital
-        scheduler.addPatient(new Patient("Jorge", "Medium", 75, "Dr. Fran", false));
-
-        // Gets patients based on priority
-        System.out.println("Next patient: " + scheduler.getNextPatient());
-        System.out.println("Next patient: " + scheduler.getNextPatient());
-        System.out.println("Next patient: " + scheduler.getNextPatient());
-        System.out.println("Next patient: " + scheduler.getNextPatient());
-        System.out.println("Next patient: " + scheduler.getNextPatient());
-    }
+public int countPatientsRecursive(PriorityQueue<Patient> tempQueue) {
+    if (tempQueue.isEmpty()) return 0; // Base case: If queue is empty, return 0
+    Patient removed = tempQueue.poll(); // Remove one patient
+    int count = 1 + countPatientsRecursive(tempQueue); // Recursive call
+    tempQueue.add(removed); // Restore the removed patient to maintain data integrity
+    return count;
+}
 }

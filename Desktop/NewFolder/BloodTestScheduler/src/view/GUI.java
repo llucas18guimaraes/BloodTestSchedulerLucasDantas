@@ -6,6 +6,7 @@ package view;
 import javax.swing.JOptionPane;
 import model.Patient;
 import controller.Scheduler;
+import java.util.PriorityQueue;
 
 
 /**
@@ -16,11 +17,6 @@ import controller.Scheduler;
 
 public class GUI extends javax.swing.JFrame {
 private Scheduler scheduler;
-
-
-    /**
-     * Creates new form GUI
-     */
     public GUI() {
         initComponents();
         scheduler = new Scheduler();
@@ -249,76 +245,70 @@ private Scheduler scheduler;
     }//GEN-LAST:event_nameFieldActionPerformed
 
     private void nextPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPatientButtonActionPerformed
-       // Get the next 
-    Patient nextPatient = scheduler.peekNextPatient(); // Just check
+     // Get the next patient
+    Patient nextPatient = scheduler.peekNextPatient(); // Just check without removing
 
     if (nextPatient == null) {
         JOptionPane.showMessageDialog(this, "No more patients in the queue.", "Next Patient", JOptionPane.INFORMATION_MESSAGE);
         return;
     }
 
-    // Formating the pop-up message
+    // Formatting the pop-up message
     String message = "Next Patient: " + nextPatient.getName() + "\n\n" +
                      "Priority: " + nextPatient.getPriority() + "\n" +
                      "Age: " + nextPatient.getAge() + "\n" +
                      "GP Details: " + nextPatient.getGpDetails() + "\n\n" +
                      "Did the patient show up?";
 
-    // Show the confirmation dialog
+    // Show the confirmation 
     int response = JOptionPane.showConfirmDialog(this, message, "Next Patient", JOptionPane.YES_NO_OPTION);
 
-    // remove it them from the queue
+    //  remove the patient from the queue
     nextPatient = scheduler.getNextPatient(); 
 
     if (response == JOptionPane.NO_OPTION) {
-        // Only add to No-Show if the user selects No
+        // add to No-Show if the user selects No
         scheduler.addNoShow(nextPatient);
+        System.out.println("Added to No-Show: " + nextPatient.getName()); // Debugging log
         JOptionPane.showMessageDialog(this, "Marked as No-Show: " + nextPatient.getName(), "No-Show", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Refresh the patient lists
+    // Refresh the lists 
     updatePatientList();
     }//GEN-LAST:event_nextPatientButtonActionPerformed
 
     private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
-        // TODO add your handling code here:
-        // Get input values from the form
-        String name = nameField.getText().trim();
-        String priority = (String) priorityBox.getSelectedItem();
-        String gpDetails = gpField.getText().trim();
-        boolean fromHospital = hospitalCheckBox.isSelected();
+    // Validate input
+    String name = nameField.getText().trim();
+    String priority = (String) priorityBox.getSelectedItem();
+    String gpDetails = gpField.getText().trim();
+    boolean fromHospital = hospitalCheckBox.isSelected();
 
-        // Get and validate age 
-        String ageText = ageField.getText().trim();
-        int age = 0;
-        try {
-            age = Integer.parseInt(ageText);
-            if (age <= 0) {
-                throw new NumberFormatException(); // Prevent negative or zero age
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid positive number for age!", "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Stop execution if age is invalid
-        }
+    String ageText = ageField.getText().trim();
+    int age;
+    
+    try {
+        age = Integer.parseInt(ageText);
+        if (age <= 0) throw new NumberFormatException();
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid positive number for age!", "Error", JOptionPane.ERROR_MESSAGE);
+        return; // Exit if invalid age
+    }
 
-        // Validate other inputs
-        if (name.isEmpty() || gpDetails.isEmpty() || priority == null || priority.equals("Select Priority")) {
-            JOptionPane.showMessageDialog(this, "Please fill all fields correctly!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    if (name.isEmpty() || gpDetails.isEmpty() || priority.equals("Select Priority")) {
+        JOptionPane.showMessageDialog(this, "Please fill all fields correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        // Create new patient object
-        Patient patient = new Patient(name, priority, age, gpDetails, fromHospital);
+    // Create and add patient
+    Patient patient = new Patient(name, priority, age, gpDetails, fromHospital);
+    scheduler.addPatient(patient);
+    updatePatientList();
+    JOptionPane.showMessageDialog(this, "Patient added successfully!");
 
-        // Add patient to the scheduler
-        scheduler.addPatient(patient);
-
-        // Update UI
-        updatePatientList();
-        JOptionPane.showMessageDialog(this, "Patient added successfully!");
-
-        // Clear fields
-        clearFields();
+    // clear the fields
+    clearFields();
+    
     }//GEN-LAST:event_addPatientButtonActionPerformed
 
     private void hospitalCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalCheckBoxActionPerformed
@@ -383,37 +373,46 @@ private Scheduler scheduler;
     private javax.swing.JComboBox<String> priorityBox;
     // End of variables declaration//GEN-END:variables
 
+private String formatPatientDisplay(Patient patient) {
+    return "Name: " + patient.getName() +
+           ", Priority: " + patient.getPriority() +
+           ", Age: " + patient.getAge() +
+           ", GP: " + patient.getGpDetails();
+}
+
+
+    
+    
 private void updatePatientList() {
-    // Update Current Patient List
     patientListArea.setText("");
     for (Patient patient : scheduler.getPatients()) {
         patientListArea.append(formatPatientDisplay(patient) + "\n");
     }
 
-    // Update NoShow List
+    int totalPatients = scheduler.countPatientsRecursive(new PriorityQueue<>(scheduler.getPatients()));
+    patientListArea.append("\nTotal Patients in Queue: " + totalPatients + "\n");
+    
     noShowListArea.setText("");
     for (Patient patient : scheduler.getNoShowPatients()) {
         noShowListArea.append(formatPatientDisplay(patient) + "\n");
     }
-}
+    System.out.println("Recursive Count: " + scheduler.countPatientsRecursive(new PriorityQueue<>(scheduler.getPatients())));
 
-    //  Formatting Display
-    private String formatPatientDisplay(Patient patient) {
-    return "Patient: " + patient.getName() + 
-           ", Priority: " + patient.getPriority() + 
-           ", Age: " + patient.getAge() + 
-           ", GP Details: " + patient.getGpDetails();
 }
 
 
-    // Clear previous inputs
-    private void clearFields() {
-    nameField.setText("");
-    ageField.setText("");
-    priorityBox.setSelectedIndex(0); // Reset
-    gpField.setText("");
-    hospitalCheckBox.setSelected(false); // Uncheck  box
-}
+   private void clearFields() {
 
+    // reset fields
+    nameField.setText("");   
+    ageField.setText("");     // Ensures it's blank
+    ageField.setValue(null);  // Clears formatted text field
+    priorityBox.setSelectedIndex(0);  
+    gpField.setText("");     
+    hospitalCheckBox.setSelected(false);  
+
+    // Focus cursor on Name field for the next input
+    nameField.requestFocus();
+    }
 }
 
