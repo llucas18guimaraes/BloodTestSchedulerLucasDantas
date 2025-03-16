@@ -2,6 +2,8 @@ package controller;
 import model.Patient;
 import java.util.PriorityQueue;
 import java.util.Comparator;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,7 +55,9 @@ public class Scheduler implements Schedulable {
     public Patient getNextPatient() {
         return queue.poll();
     }
-
+    public List<Patient> getPatients() {
+    return new ArrayList<>(queue); // ✅ Converts PriorityQueue to List
+    }
     // To Test the priority queue sorting 
     public static void main(String[] args) {
         Scheduler scheduler = new Scheduler();
