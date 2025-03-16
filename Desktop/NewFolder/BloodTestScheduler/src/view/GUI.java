@@ -246,7 +246,7 @@ private Scheduler scheduler;
 
     private void nextPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPatientButtonActionPerformed
      // Get the next patient
-    Patient nextPatient = scheduler.peekNextPatient(); // Just check without removing
+    Patient nextPatient = scheduler.peekNextPatient();
 
     if (nextPatient == null) {
         JOptionPane.showMessageDialog(this, "No more patients in the queue.", "Next Patient", JOptionPane.INFORMATION_MESSAGE);
@@ -267,9 +267,9 @@ private Scheduler scheduler;
     nextPatient = scheduler.getNextPatient(); 
 
     if (response == JOptionPane.NO_OPTION) {
-        // add to No-Show if the user selects No
+        // add to NoShow if the user selects No
         scheduler.addNoShow(nextPatient);
-        System.out.println("Added to No-Show: " + nextPatient.getName()); // Debugging log
+        System.out.println("Added to No-Show: " + nextPatient.getName());
         JOptionPane.showMessageDialog(this, "Marked as No-Show: " + nextPatient.getName(), "No-Show", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -279,7 +279,7 @@ private Scheduler scheduler;
 
     private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
     // Validate input
-    String name = nameField.getText().trim();
+  String name = nameField.getText().trim();
     String priority = (String) priorityBox.getSelectedItem();
     String gpDetails = gpField.getText().trim();
     boolean fromHospital = hospitalCheckBox.isSelected();
@@ -287,16 +287,31 @@ private Scheduler scheduler;
     String ageText = ageField.getText().trim();
     int age;
     
+    //  (only letters and spaces, min 3 characters)
+    String nameRegex = "^[a-zA-Z\\s]{3,}$";
+
+    // Check if name or GP Name contains invalid characters or is too short
+    if (!name.matches(nameRegex)) {
+        JOptionPane.showMessageDialog(this, "Patient name must contain only letters and spaces, with at least 3 characters!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (!gpDetails.matches(nameRegex)) {
+        JOptionPane.showMessageDialog(this, "GP name must contain only letters and spaces, with at least 3 characters!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Validate age
     try {
         age = Integer.parseInt(ageText);
         if (age <= 0) throw new NumberFormatException();
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Please enter a valid positive number for age!", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Exit if invalid age
+        return;
     }
 
-    if (name.isEmpty() || gpDetails.isEmpty() || priority.equals("Select Priority")) {
-        JOptionPane.showMessageDialog(this, "Please fill all fields correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+    if (priority.equals("Select Priority")) {
+        JOptionPane.showMessageDialog(this, "Please select a valid priority!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
@@ -306,9 +321,8 @@ private Scheduler scheduler;
     updatePatientList();
     JOptionPane.showMessageDialog(this, "Patient added successfully!");
 
-    // clear the fields
+    // Clear input fields
     clearFields();
-    
     }//GEN-LAST:event_addPatientButtonActionPerformed
 
     private void hospitalCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalCheckBoxActionPerformed
@@ -390,7 +404,7 @@ private void updatePatientList() {
     }
 
     int totalPatients = scheduler.countPatientsRecursive(new PriorityQueue<>(scheduler.getPatients()));
-    patientListArea.append("\nTotal Patients in Queue: " + totalPatients + "\n");
+    patientListArea.append("\n Total Patients in Queue: " + totalPatients + "\n");
     
     noShowListArea.setText("");
     for (Patient patient : scheduler.getNoShowPatients()) {
