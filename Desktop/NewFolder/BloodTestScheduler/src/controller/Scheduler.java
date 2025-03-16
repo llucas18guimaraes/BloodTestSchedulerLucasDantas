@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -51,13 +52,36 @@ public class Scheduler implements Schedulable {
         queue.add(patient);
     }
 
-    @Override
-    public Patient getNextPatient() {
-        return queue.poll();
+@Override
+public Patient getNextPatient() {
+    return queue.poll(); // Just retrieve the patient, don't modify No-Show list here
+}
+
+   // Stores last 5 No-Show patients
+private LinkedList<Patient> noShowList = new LinkedList<>();
+
+// Adds a patient to the No-Show list (keeps only last 5)
+public void addNoShow(Patient patient) {
+    if (noShowList.size() >= 5) {
+        noShowList.removeFirst();
     }
-    public List<Patient> getPatients() {
-    return new ArrayList<>(queue); // ✅ Converts PriorityQueue to List
-    }
+    noShowList.add(patient);
+}
+
+// Retrieves the list of No-Show patients
+public List<Patient> getNoShowPatients() {
+    return new ArrayList<>(noShowList);
+}
+
+public List<Patient> getPatients() {
+    return new ArrayList<>(queue); // Converts PriorityQueue to List
+}
+public Patient peekNextPatient() {
+    return queue.peek(); // This retrieves the next patient without removing them
+}
+
+
+
     // To Test the priority queue sorting 
     public static void main(String[] args) {
         Scheduler scheduler = new Scheduler();

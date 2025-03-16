@@ -51,6 +51,10 @@ private Scheduler scheduler;
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         ageField = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        noShowListArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,6 +109,11 @@ private Scheduler scheduler;
         });
 
         priorityBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Priority", "Low", "Medium", "Urgent" }));
+        priorityBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priorityBoxActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Hospital Patient");
 
@@ -113,49 +122,64 @@ private Scheduler scheduler;
         ageField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         ageField.setPreferredSize(new java.awt.Dimension(40, 25));
 
+        jLabel7.setText("Current Patient List ");
+
+        jLabel8.setText("No Shown Patient List");
+
+        noShowListArea.setColumns(20);
+        noShowListArea.setRows(5);
+        noShowListArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane2.setViewportView(noShowListArea);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hospitalCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gpField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(priorityBox, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(174, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nextPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(222, 222, 222)
+                .addComponent(jLabel8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel3))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(nextPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(44, 44, 44))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(hospitalCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(gpField, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(priorityBox, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(ageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel1)
+                        .addGap(189, 189, 189))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(228, 228, 228))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(214, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(189, 189, 189))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -168,26 +192,32 @@ private Scheduler scheduler;
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(ageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(gpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                    .addComponent(gpField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(priorityBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(priorityBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(hospitalCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nextPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -210,79 +240,90 @@ private Scheduler scheduler;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void hospitalCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalCheckBoxActionPerformed
+    private void priorityBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priorityBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_hospitalCheckBoxActionPerformed
+    }//GEN-LAST:event_priorityBoxActionPerformed
 
     private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameFieldActionPerformed
 
-    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
-        // TODO add your handling code here:
-  // Get input values from the form
-    String name = nameField.getText().trim();
-    String priority = (String) priorityBox.getSelectedItem();
-    String gpDetails = gpField.getText().trim();
-    boolean fromHospital = hospitalCheckBox.isSelected();
-    
-    // Get and validate age input
-    String ageText = ageField.getText().trim();
-    int age = 0;
-    try {
-        age = Integer.parseInt(ageText);
-        if (age <= 0) {
-            throw new NumberFormatException(); // Prevent negative or zero age
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Please enter a valid positive number for age!", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Stop execution if age is invalid
-    }
-
-    // Validate other inputs
-    if (name.isEmpty() || gpDetails.isEmpty() || priority == null || priority.equals("Select Priority")) {
-        JOptionPane.showMessageDialog(this, "Please fill all fields correctly!", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Create new patient object
-    Patient patient = new Patient(name, priority, age, gpDetails, fromHospital);
-
-    // Add patient to the scheduler
-    scheduler.addPatient(patient);
-
-    // Update UI
-    updatePatientList();
-    JOptionPane.showMessageDialog(this, "Patient added successfully!");
-
-    // Clear fields
-    clearFields();
-
-    }//GEN-LAST:event_addPatientButtonActionPerformed
-
     private void nextPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPatientButtonActionPerformed
-        // TODO add your handling code here:
-     // Retrieve the next patient
-    Patient nextPatient = scheduler.getNextPatient();
+       // Get the next 
+    Patient nextPatient = scheduler.peekNextPatient(); // Just check
 
     if (nextPatient == null) {
         JOptionPane.showMessageDialog(this, "No more patients in the queue.", "Next Patient", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        // Format the pop-up message with line breaks
-        String message = "Next Patient : " + nextPatient.getName()+ "\n" + "\n" +
-
-                         "Priority: " + nextPatient.getPriority() + "\n" +
-                         "Age: " + nextPatient.getAge() + "\n" +
-                         "GP Details: " + nextPatient.getGpDetails();
-                         
-
-        JOptionPane.showMessageDialog(this, message, "Next Patient", JOptionPane.INFORMATION_MESSAGE);
+        return;
     }
 
-    // Update the patient list display
-    updatePatientList();
+    // Formating the pop-up message
+    String message = "Next Patient: " + nextPatient.getName() + "\n\n" +
+                     "Priority: " + nextPatient.getPriority() + "\n" +
+                     "Age: " + nextPatient.getAge() + "\n" +
+                     "GP Details: " + nextPatient.getGpDetails() + "\n\n" +
+                     "Did the patient show up?";
 
+    // Show the confirmation dialog
+    int response = JOptionPane.showConfirmDialog(this, message, "Next Patient", JOptionPane.YES_NO_OPTION);
+
+    // remove it them from the queue
+    nextPatient = scheduler.getNextPatient(); 
+
+    if (response == JOptionPane.NO_OPTION) {
+        // Only add to No-Show if the user selects No
+        scheduler.addNoShow(nextPatient);
+        JOptionPane.showMessageDialog(this, "Marked as No-Show: " + nextPatient.getName(), "No-Show", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Refresh the patient lists
+    updatePatientList();
     }//GEN-LAST:event_nextPatientButtonActionPerformed
+
+    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
+        // TODO add your handling code here:
+        // Get input values from the form
+        String name = nameField.getText().trim();
+        String priority = (String) priorityBox.getSelectedItem();
+        String gpDetails = gpField.getText().trim();
+        boolean fromHospital = hospitalCheckBox.isSelected();
+
+        // Get and validate age 
+        String ageText = ageField.getText().trim();
+        int age = 0;
+        try {
+            age = Integer.parseInt(ageText);
+            if (age <= 0) {
+                throw new NumberFormatException(); // Prevent negative or zero age
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid positive number for age!", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop execution if age is invalid
+        }
+
+        // Validate other inputs
+        if (name.isEmpty() || gpDetails.isEmpty() || priority == null || priority.equals("Select Priority")) {
+            JOptionPane.showMessageDialog(this, "Please fill all fields correctly!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Create new patient object
+        Patient patient = new Patient(name, priority, age, gpDetails, fromHospital);
+
+        // Add patient to the scheduler
+        scheduler.addPatient(patient);
+
+        // Update UI
+        updatePatientList();
+        JOptionPane.showMessageDialog(this, "Patient added successfully!");
+
+        // Clear fields
+        clearFields();
+    }//GEN-LAST:event_addPatientButtonActionPerformed
+
+    private void hospitalCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hospitalCheckBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -330,27 +371,48 @@ private Scheduler scheduler;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField nameField;
     private javax.swing.JButton nextPatientButton;
+    private javax.swing.JTextArea noShowListArea;
     private javax.swing.JTextArea patientListArea;
     private javax.swing.JComboBox<String> priorityBox;
     // End of variables declaration//GEN-END:variables
 
 private void updatePatientList() {
-    patientListArea.setText(""); // 
+    // Update Current Patient List
+    patientListArea.setText("");
+    for (Patient patient : scheduler.getPatients()) {
+        patientListArea.append(formatPatientDisplay(patient) + "\n");
+    }
 
-    for (Patient patient : scheduler.getPatients()) { 
-        patientListArea.append(patient.toString() + "\n"); // ✅ Display patients
+    // Update NoShow List
+    noShowListArea.setText("");
+    for (Patient patient : scheduler.getNoShowPatients()) {
+        noShowListArea.append(formatPatientDisplay(patient) + "\n");
     }
 }
-private void clearFields() {
-    nameField.setText(""); // Clear name
-    ageField.setText("");  // Clear age
-    priorityBox.setSelectedIndex(0); // Reset dropdown
-    gpField.setText(""); //Clear GP name
-    hospitalCheckBox.setSelected(false); // Uncheck hospital box
+
+    //  Formatting Display
+    private String formatPatientDisplay(Patient patient) {
+    return "Patient: " + patient.getName() + 
+           ", Priority: " + patient.getPriority() + 
+           ", Age: " + patient.getAge() + 
+           ", GP Details: " + patient.getGpDetails();
+}
+
+
+    // Clear previous inputs
+    private void clearFields() {
+    nameField.setText("");
+    ageField.setText("");
+    priorityBox.setSelectedIndex(0); // Reset
+    gpField.setText("");
+    hospitalCheckBox.setSelected(false); // Uncheck  box
 }
 
 }
